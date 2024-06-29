@@ -1,0 +1,36 @@
+@import url("https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
+.consol {
+  background-image: url("../images/bg_experience.jpg") !important;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center center;
+  background-color: rgba(255, 255, 255, 0.6);
+  background-blend-mode: overlay;
+  font-family: "PT Serif", serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: "PT Serif", serif;
+  font-size: 1em;
+  transition: padding-top 0.5s ease;
+
+  &.console-open {
+    padding-top: 24vw;
+  }
+
+  &.console-closed {
+    padding-top: 5vw;
+  }
+}
+
+@media (max-width: 768px) {
+    .consol{
+        justify-content: center;
+        align-items: center;
+    }
+}
+

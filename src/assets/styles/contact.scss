@@ -1,0 +1,159 @@
+@import url("https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
+.tarjeta {
+  background-image: url("../images/elegantBlackGb.jpg") !important;
+  background-repeat: no-repeat;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  transition: padding-top 0.5s ease;
+  font-family: "PT Serif", serif;
+  font-size: 1.3em;
+
+  &.console-open {
+    padding-top: 19vw;
+  }
+
+  &.console-closed {
+    padding-top: 0;
+  }
+
+  .card-container {
+    // perspective: 1000px;
+
+    .card {
+      width: 40vw;
+      height: 20vw;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.6s;
+
+      &.flipped {
+        transform: rotateY(180deg);
+      }
+
+      .card-front,
+      .card-back {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        backface-visibility: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        color: #C0C0C0;
+        //Neon
+        // text-shadow: 
+        //         0 0 5px #fff, 
+        //         0 0 10px #fff, 
+        //         0 0 15px #fff, 
+        //         0 0 20px #00f, 
+        //         0 0 30px #00f, 
+        //         0 0 40px #00f, 
+        //         0 0 50px #00f, 
+        //         0 0 75px #00f;
+        // border: 2px solid white;
+        border-radius: 10px;
+        box-shadow: 11px 11px 8px rgba(255, 255, 255, 0.3);
+
+        h2 {
+          margin: 0;
+          font-size: 1.5em;
+        }
+
+        p {
+          margin: 0.5em 0;
+        }
+      }
+
+      .card-front {
+        background-color: #1e1e1e;
+        width: 100%;
+        height: 100%;
+
+        .card-front-content {
+          width: 90%;
+          height: 90%;
+          display: grid;
+          grid:
+            "cardHead cardHead" 0.6fr
+            "locationSection netSection" 1fr
+            / 1fr 1fr;
+          gap: 8px;
+          text-align: center;
+        }
+
+        .cardHead {
+          grid-area: cardHead;
+        }
+        .locationSection {
+          grid-area: locationSection;
+        }
+        .netSection {
+          grid-area: netSection;
+          display: flex;
+          align-items: center;
+        }
+      }
+    }
+
+    .card-back {
+      background-color: #333;
+      transform: rotateY(180deg);
+
+      form{
+        textarea, input {
+          margin: 3% 0 3% 0;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    width: 70vw !important;
+    height: 50vw !important;
+    font-size: 1em !important;
+    form {
+      width: 80% !important;
+      input,
+      textarea {
+        font-size: 0.8em;
+        margin: 3% 0 3% 0;
+      }
+      .send {
+        font-size: 0.8em;
+      }
+    }
+    h2 {
+      display: none;
+    }
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .card {
+    width: 80vw !important;
+    height: 50vw !important;
+    font-size: 2em !important;
+    form {
+      width: 80% !important;
+      margin-top: 5%;
+      input,
+      textarea {
+        font-size: 1em;
+      }
+      .send {
+        font-size: 1em;
+      }
+    }
+  }
+}

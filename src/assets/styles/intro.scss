@@ -1,0 +1,150 @@
+.intro-container {
+  transition: padding-top 0.5s ease;
+  margin: 5vw 3vw;
+  display: grid;
+  grid-template-rows: 0fr 1fr 1fr 1fr 1fr 1fr; //un fr por cada fila
+  grid-template-columns: 1fr; //un fr por cada columna
+
+  &.console-open {
+    padding-top: 24vw;
+  }
+
+  &.console-closed {
+    padding-top: 5vw;
+  }
+
+  .section {
+    grid-template-rows: 0.3fr 1fr 0.3fr;
+  }
+
+  h1 {
+    text-align: right;
+    width: 100%;
+    margin-right: 10px;
+    font-size: 5rem;
+  }
+
+  .img {
+    height: auto;
+    width: 70%;
+    align-self: center;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  p {
+    margin: 10px;
+    text-align: justify;
+    font-size: 1.5rem;
+    text-shadow: 2px 2px 4px rgb(90, 195, 67);
+  }
+}
+
+
+/* Media Queries for Medium Screens */
+@media (max-width: 768px) {
+  .intro-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    aside{
+      display: flex;
+      justify-content: center;
+
+      // .img{
+      //   width: 40% !important;
+      // }
+    }
+
+    h1 {
+      font-size: 4.5rem !important;
+      text-align: center !important;
+    }
+
+    p {
+      font-size: 1.7rem !important;
+    }
+  }
+
+  .slick-slider{
+    width: 70%;
+  }
+
+  // .slick-list {
+  //   max-width: 768px;
+  //   height: auto;
+  // }
+
+  .section {
+    grid-template-columns: 1fr !important;
+    grid-template-rows: 1fr 1fr !important;
+  }
+
+  .section .img {
+    max-width: 768px !important;
+  }
+}
+
+/* Media Queries for Small Screens */
+@media (max-width: 480px) {
+  .intro-container {
+    // margin: 5vw 1vw !important;
+    // grid-template-rows: 0fr 1fr 1fr !important;
+    // padding-top: 15vw !important;
+    display: flex;
+    flex-direction: column;
+    height: 6000px;
+
+    h1 {
+      font-size: 2rem !important;
+      text-align: center !important;
+    }
+
+    p {
+      font-size: 1rem !important;
+      // width: 280px !important;
+    }
+  }
+
+ 
+  .slick-slider{
+    width: 70%;
+  }
+
+  // .slick-track {
+  //   max-width: 768px;
+  //   height: 100%;
+  // }
+
+  .section {
+    grid-template-columns: 1fr !important;
+    grid-template-rows: 1fr 1fr !important;
+  }
+
+  aside{
+    display: flex  !important;
+    justify-content: center  !important;
+    max-width: 480px;
+    overflow: hidden;
+
+    // .img{
+    //   width: 40% !important;
+    // }
+  }
+
+}
+
+ @media (max-width: 1200px){
+  .intro-container{
+    .section {
+      grid-template-rows: 1fr 0.3fr 1fr;
+    }
+ }
+ }
+
+ @media (max-width: 900px){
+   
+ }
+

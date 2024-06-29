@@ -1,0 +1,128 @@
+@import url("https://fonts.googleapis.com/css2?family=VT323&display=swap");
+
+.top-container {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  align-items: center;
+
+  .toggle-button {
+    font-family: "VT323", monospace;
+    background-color: #444;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+    position: fixed;
+    top: 0;
+    width: 60%;
+    z-index: 1001;
+    border-radius: 7px;
+  }
+
+  .console-container {
+    font-family: "VT323", monospace;
+    font-size: 1.5rem;
+    position: fixed;
+    top: 36px;
+    width: 60%;
+    background-color: #1e1e1e;
+    color: #149414 !important;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    overflow: hidden;
+    transition: max-height 0.5s ease, margin-top 0.5s ease;
+    max-height: 0;
+    margin-top: 0;
+    border-radius: 7px;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    &.open {
+      max-height: 20vw;
+    }
+
+    &.closed {
+      max-height: 0;
+      margin-top: 0;
+    }
+
+    .console {
+      width: 100%;
+      height: 20vw;
+      padding: 10px;
+      background-color: #2e2e2e;
+      overflow-y: auto;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+      &.transparent {
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .input-line {
+        display: flex;
+        margin-left: 5px;
+
+        input {
+          font-family: "VT323", monospace;
+          font-size: 1.5rem;
+          background: none;
+          border: none;
+          color: #149414;
+          flex: 1;
+          outline: none;
+          width: 100%;
+        }
+
+        .console-text {
+          white-space: pre;
+        }
+      }
+    }
+  }
+}
+
+/* Media Queries for Medium Screens */
+@media (max-width: 768px) {
+  .toggle-button {
+    font-size: 1rem !important;
+    width: 80% !important;;
+  }
+
+  .console-container {
+    font-size: 1.2rem !important;
+    width: 80% !important;
+
+    .console {
+      height: 30vh !important;;
+    }
+
+    .input-line input {
+      font-size: 1.2rem !important;
+    }
+  }
+}
+
+/* Media Queries for Small Screens */
+@media (max-width: 480px) {
+  .toggle-button {
+    font-size: 0.8rem !important;;
+    width: 90% !important;
+  }
+
+  .console-container {
+    font-size: 1rem !important;
+    width: 90% !important;;
+
+    .console {
+      height: 40vh !important;;
+    }
+
+    .input-line input {
+      font-size: 1rem !important;
+      input {
+        font-size: 1rem !important;
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap'); //https://fonts.google.com/selection/embed
+
+#root{
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    font-family: Gloria Hallelujah;
+}
+@media (max-width: 1200px){
+    body{
+      font-size: 80%;
+    }
+  }
+  
+  @media (max-width: 900px){
+    body{
+      font-size: 60% !important;
+    }
+  }

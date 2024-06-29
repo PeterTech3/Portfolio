@@ -1,0 +1,166 @@
+@import url("https://fonts.cdnfonts.com/css/pokemon-solid");
+@import url("https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap");
+
+.box {
+
+
+  .content {
+    display: grid;
+    grid:
+      "side title title" 1fr
+      "side text video" 1fr
+      / 0.3fr 1fr 1fr;
+    .sidebar {
+      grid-area: side;
+    }
+    .img {
+      grid-area: title;
+    }
+    .text {
+      grid-area: text;
+    }
+    .video {
+      grid-area: video;
+    }
+  }
+  .box-0 {
+    background-image: url("../images/chessBg.jpeg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    
+  
+    .img {
+      color: white;
+      font-family: "Playwrite GB S", cursive;
+      font-size: 4em;
+      text-align: center;
+    }
+  
+    .text {
+      font-family: "Playwrite GB S", cursive;
+      color: white;
+      text-align: justify;
+      font-size: 2em;
+      margin: 3%;
+      text-shadow: 2px 2px 4px rgb(255, 255, 255);
+      line-height: 1.6;
+    }
+  }
+  
+  .box-1 {
+    background-image: url("../images/pokedexBg.jpg");
+    background-blend-mode: overlay;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+  
+    .img {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  
+    .text {
+      font-family: "Pokemon Solid", sans-serif;
+      color: rgb(56, 168, 234);
+      text-align: justify;
+      font-size: 2em;
+      margin-right: 3%;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
+      line-height: 1.6;
+      margin: 3%;
+      letter-spacing: 0.11em;
+    }
+  }
+  
+  .box-2 {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    background-image: url("../images/guardiasBg.jpg");
+    background-color: rgba(255, 255, 255, 0.7);
+    background-blend-mode: overlay;
+  
+    .img {
+      color: rgb(0, 0, 0);
+      font-family: "Playwrite GB S", cursive;
+      font-size: 4em;
+      text-align: center;
+    }
+  
+    .text {
+      color: rgb(0, 0, 0);
+      text-align: justify;
+      font-size: 2em;
+      margin-right: 3%;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
+      line-height: 1.6;
+      margin: 3%;
+    }
+  }
+}
+
+
+@media (max-width: 768px) {
+  .box {
+    padding: 0px;
+    .content{
+      grid:
+      "title title title"
+      "side text video";
+
+      grid-template-rows: 0.2fr 1fr 0.2fr;
+      grid-template-columns:0.4fr 1fr 0.6fr;
+
+      .sidebar {
+        grid-area: side;
+      }
+      .img {
+        grid-area: title;
+        margin-top: 10% !important;
+      }
+      .text {
+        grid-area: text;
+        margin-right: 10%;
+        margin-top: 10%;
+      }
+      .video {
+        grid-area: video;
+        margin-right: 3%;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .box {
+    padding: 0px;
+    .content{
+      font-size: 0.7em;
+      display: grid;
+      grid-template-columns: 0.65fr 1fr 1fr;
+      grid-template-rows: 0.2fr 1fr 1fr;
+      grid-template-areas:
+      "navbar title title"
+      "navbar text text"
+      "navbar video video";
+      .sidebar {
+        grid-area: side;
+      }
+      .img {
+        grid-area: title;
+        margin-top: 25% !important;
+      }
+      .text {
+        grid-area: text;
+        margin-right: 10%;
+        margin-top: 10%;
+      }
+      .video {
+        grid-area: video;
+      }
+    }
+  }
+}
