@@ -143,7 +143,10 @@ export const Console = () => {
       setLines((prevLines) => [
         ...prevLines,
         `recruiter@recruiter:$ ${inputValue}`,
-        `Comando no encontrado: ${inputValue}`,
+        language === "es"
+        ?`Comando no encontrado: ${inputValue}`
+        :`Command not found: ${inputValue}`,
+        
       ]);
     }
   };
