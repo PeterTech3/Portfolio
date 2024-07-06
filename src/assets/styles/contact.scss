@@ -94,7 +94,13 @@
           grid-area: cardHead;
         }
         .locationSection {
+          display: flex;
+          flex-direction: column;
           grid-area: locationSection;
+          hr{
+            width: 30%;
+            align-self: center;
+          }
         }
         .netSection {
           grid-area: netSection;
@@ -133,7 +139,7 @@
         font-size: 0.8em;
       }
     }
-    h2 {
+    h2, hr {
       display: none;
     }
   }
@@ -144,6 +150,9 @@
     width: 80vw !important;
     height: 50vw !important;
     font-size: 2em !important;
+    .card-front .locationSection hr{
+      width: 50% !important;
+    }
     form {
       width: 80% !important;
       margin-top: 5%;

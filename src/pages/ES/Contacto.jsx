@@ -5,15 +5,14 @@ import "../../assets/styles/contact.scss";
 import { useContext, useState } from "react";
 import { Console } from "../../components/Console";
 import { LanguageContext } from "../../context/languageContext";
+import { ContactForm } from "../../components/ContactForm";
 
 export const Contacto = () => {
   const [isFlipped, setIsFlipped] = useState(false);
 
   const { isOpen, language } = useContext(LanguageContext);
 
-  const handleClick = (e) => {
-    e.stopPropagation();
-  };
+ 
 
   return (
     <>
@@ -57,41 +56,9 @@ export const Contacto = () => {
                 </div>
               </div>
             </div>
-            <div className="card-back">
+            <div className="card-back" onClick={handleClick}>
               <h2>Contáctame</h2>
-              <form className="w-full max-w-sm" onClick={handleClick}>
-                <div >
-                  <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="from"
-                    type="text"
-                    placeholder="Tu email"
-                  />
-                </div>
-                <div >
-                  <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="subject"
-                    type="text"
-                    placeholder="Asunto"
-                  />
-                </div>
-                <div>
-                  <textarea
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="message"
-                    placeholder="Tu mensaje"
-                  ></textarea>
-                </div>
-                <div className="flex justify-center align-center items-center send">
-                  <button
-                    className="text-white font-bold py-0 px-4 rounded focus:outline-none focus:shadow-outline"
-                    type="button"
-                  >
-                    Enviar
-                  </button>
-                </div>
-              </form>
+              <ContactForm/>
             </div>
           </div>
         </div>
@@ -108,11 +75,14 @@ export const Contacto = () => {
               <div className="card-front-content">
                 <div className="cardHead">
                   <h2>Pedro Antonio Sánchez Pérez</h2>
+                  <hr />
                   <p>Programmer and teacher</p>
                 </div>
                 <div className="locationSection">
                   <p>+34 630 75 63 98</p>
+                  <hr />
                   <p>San Javier (Murcia, Spain)</p>
+                  <hr />
                   <p>petech93@gmail.com</p>
                 </div>
                 <div className="netSection">
@@ -136,41 +106,9 @@ export const Contacto = () => {
                 </div>
               </div>
             </div>
-            <div className="card-back">
+            <div className="card-back" >
               <h2>Contact me</h2>
-              <form className="w-full max-w-sm" onClick={handleClick}>
-                <div className="mb-4">
-                  <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="from"
-                    type="text"
-                    placeholder="Tu email"
-                  />
-                </div>
-                <div className="mb-4">
-                  <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="subject"
-                    type="text"
-                    placeholder="Asunto"
-                  />
-                </div>
-                <div className="mb-6">
-                  <textarea
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="message"
-                    placeholder="Tu mensaje"
-                  ></textarea>
-                </div>
-                <div className="flex justify-center align-center items-center send">
-                  <button
-                    className="text-white font-bold py-0 px-4 rounded focus:outline-none focus:shadow-outline"
-                    type="button"
-                  >
-                    Send
-                  </button>
-                </div>
-              </form>
+              <ContactForm/>
             </div>
           </div>
         </div>
