@@ -9,6 +9,10 @@
   perspective: 100vw;
   transform: scale(0.75);
   animation: float 3s ease-in-out infinite;
+  transition: transform 0.4s ease;
+  &:hover {
+    transform: scale(0.85); /* Se encoge un poco al apuntar, da sensación de profundidad */
+  }
   .cube {
     width: 100%;
     height: 100%;
@@ -24,21 +28,22 @@
       position: absolute;
       width: 16vw;
       height: 16vw;
-      background: linear-gradient(145deg, #1c1c1c, #3a3a3a);
-      border: 1px solid #2a2a2a;
-      color: #08f;
-      font-family: "PT Serif", serif;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
       font-size: 1.2em;
       font-weight: 700;
       text-align: center;
-      box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.3),
-                  0 0 15px rgba(0, 0, 0, 0.5);
+      box-shadow: 
+        inset 0 0 15px rgba(34, 197, 94, 0.1),
+        0 0 10px rgba(0, 0, 0, 0.5);
       overflow: hidden;
       display: flex; 
       justify-content: center;
       align-items: center;
       transition: background 0.6s ease-in-out;
-
+      text-shadow: 0 0 5px rgba(34, 197, 94, 0.5);  
       &::before {
         content: "";
         position: absolute;
@@ -54,6 +59,14 @@
         opacity: 0;
         transition: opacity 0.6s ease-in-out;
       }
+      &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(45deg, transparent 45%, rgba(34, 197, 94, 0.1) 50%, transparent 55%);
+        background-size: 200% 200%;
+        
+      }
 
       .cube-content {
         width: 90%;
@@ -63,12 +76,15 @@
         display: block;
       }
     }
+    
     .cube-face-front {
       transform: translateZ(9vw); /* 18vw / 2 = 7.5vw */
     }
     
     .cube-face-back {
       transform: rotateY(180deg) translateZ(7.9vw);
+      background: linear-gradient(135deg, #050505 0%, #111 100%);
+      border-color: rgba(34, 197, 94, 0.6);
     }
     
     .cube-face-left {
@@ -92,15 +108,9 @@
 /* Flotación */
 
 @keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+  0%, 100% { transform: translateY(0) rotateX(0deg); }
+  50% { transform: translateY(-15px) rotateX(5deg); }
 }
-
 /* Posicionamiento específico para cada cubo */
 
 .cube-box .cube-container:nth-child(1) {

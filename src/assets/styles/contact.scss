@@ -1,168 +1,163 @@
-@import url("https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap");
-
-.tarjeta {
-  background-image: url("../images/elegantBlackGb.jpg") !important;
-  background-repeat: no-repeat;
-  height: 100%;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
-  background-position: center center;
+.contact-section {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  transition: padding-top 0.5s ease;
-  font-family: "PT Serif", serif;
-  font-size: 1.3em;
+  padding: 4rem 2rem;
+  z-index: 10;
+  position: relative;
+  background: transparent;
+}
 
-  &.console-open {
-    padding-top: 19vw;
-  }
+.terminal-container {
+  width: 100%;
+  max-width: 600px;
+  background: rgba(10, 15, 24, 0.8);
+  backdrop-filter: blur(15px);
+  z-index: 20;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  font-family: "Fira Code", "Courier New", monospace;
+}
 
-  &.console-closed {
-    padding-top: 0;
-  }
+.terminal-header {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 
-  .card-container {
-    // perspective: 1000px;
-
-    .card {
-      width: 40vw;
-      height: 20vw;
+  .buttons {
+    display: flex;
+    gap: 8px;
+    &:hover span::after {
+      opacity: 1;
+    }
+    span {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
       position: relative;
-      transform-style: preserve-3d;
-      transition: transform 0.6s;
-
-      &.flipped {
-        transform: rotateY(180deg);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      &::after {
+        content: "";
+        font-size: 8px;
+        color: rgba(0, 0, 0, 0.5);
+        opacity: 0; // Ocultos por defecto
+        transition: opacity 0.2s;
+        font-weight: bold;
       }
-
-      .card-front,
-      .card-back {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        backface-visibility: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        color: #C0C0C0;
-        //Neon
-        // text-shadow: 
-        //         0 0 5px #fff, 
-        //         0 0 10px #fff, 
-        //         0 0 15px #fff, 
-        //         0 0 20px #00f, 
-        //         0 0 30px #00f, 
-        //         0 0 40px #00f, 
-        //         0 0 50px #00f, 
-        //         0 0 75px #00f;
-        // border: 2px solid white;
-        border-radius: 10px;
-        box-shadow: 11px 11px 8px rgba(255, 255, 255, 0.3);
-
-        h2 {
-          margin: 0;
-          font-size: 1.5em;
-        }
-
-        p {
-          margin: 0.5em 0;
+      &.close {
+        background: #ff5f56;
+        &::after {
+          content: "✕";
         }
       }
-
-      .card-front {
-        background-color: #1e1e1e;
-        width: 100%;
-        height: 100%;
-
-        .card-front-content {
-          width: 90%;
-          height: 90%;
-          display: grid;
-          grid:
-            "cardHead cardHead" 0.6fr
-            "locationSection netSection" 1fr
-            / 1fr 1fr;
-          gap: 8px;
-          text-align: center;
-        }
-
-        .cardHead {
-          grid-area: cardHead;
-        }
-        .locationSection {
-          display: flex;
-          flex-direction: column;
-          grid-area: locationSection;
-          hr{
-            width: 30%;
-            align-self: center;
-          }
-        }
-        .netSection {
-          grid-area: netSection;
-          display: flex;
-          align-items: center;
+      &.minimize {
+        background: #ffbd2e;
+        &::after {
+          content: "─";
         }
       }
-    }
-
-    .card-back {
-      background-color: #333;
-      transform: rotateY(180deg);
-
-      form{
-        textarea, input {
-          margin: 3% 0 3% 0;
+      &.maximize {
+        background: #27c93f;
+        &::after {
+          content: "↕";
+          font-size: 7px;
         }
       }
     }
   }
+
+  .title {
+    margin-left: 20px;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
 }
 
-@media (max-width: 480px) {
-  .card {
-    width: 70vw !important;
-    height: 50vw !important;
-    font-size: 1em !important;
-    form {
-      width: 80% !important;
-      input,
-      textarea {
-        font-size: 0.8em;
-        margin: 3% 0 3% 0;
-      }
-      .send {
-        font-size: 0.8em;
-      }
+.terminal-body {
+  padding: 2rem;
+  font-size: 1.1rem;
+  position: relative;
+
+  .colon {
+    color: #f8f8f2; // Color blanco/crema para que resalten los dos puntos
+    margin: 0 5px;
+  }
+
+  pre {
+    margin: 0;
+  }
+
+  .line {
+    display: block;
+    white-space: pre-wrap; // Evita que se rompa el diseño en móvil
+  }
+  .sub-line {
+    padding-left: 3rem;
+  }
+
+  // Syntax Highlighting
+  .bracket {
+    color: #f8f8f2;
+  }
+  .key {
+    color: #66d9ef;
+  } // Azul cian
+  .string {
+    color: #e6db74;
+  } // Amarillo crema
+  .comment {
+    color: #75715e;
+    font-style: italic;
+    font-size: 0.9rem;
+  }
+
+  .clickable {
+    cursor: pointer;
+    transition: background 0.3s;
+    border-radius: 4px;
+    &:hover {
+      background: rgba(34, 197, 94, 0.1);
+      .string {
+        color: #22c55e;
+      } // Cambia a tu verde al hover
     }
-    h2, hr {
-      display: none;
+  }
+
+  a {
+    text-decoration: none;
+    &:hover .string {
+      text-decoration: underline;
+      color: #22c55e;
     }
   }
 }
 
-@media (min-width: 481px) and (max-width: 768px) {
-  .card {
-    width: 80vw !important;
-    height: 50vw !important;
-    font-size: 2em !important;
-    .card-front .locationSection hr{
-      width: 50% !important;
-    }
-    form {
-      width: 80% !important;
-      margin-top: 5%;
-      input,
-      textarea {
-        font-size: 1em;
-      }
-      .send {
-        font-size: 1em;
-      }
-    }
+.toast {
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
+  background: #22c55e;
+  color: white;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

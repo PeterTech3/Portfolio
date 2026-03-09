@@ -1,17 +1,8 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import AOS from "aos";
-import "aos/dist/aos.css";
-import { useEffect } from "react";
 
 export const IntroSection = ({ section, index }) => {
-  useEffect(() => {
-    AOS.init({
-      duration: 800,
-    });
-  }, []);
-
   const settings = {
     dots: true,
     infinite: true,
@@ -20,52 +11,37 @@ export const IntroSection = ({ section, index }) => {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          infinite: true,
-          dots: true
-        }
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          initialSlide: 2
-        }
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1
-        }
-      }
-    ]
   };
 
   return (
-    <div
-      className='grid grid-cols-1 md:grid-cols-5 md:grid-rows-3 sm:grid-cols-1 sm:grid-rows-2 items-center gap-4 section'
+    <section
+      className={`flex flex-col ${index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"} items-center gap-10`}
       data-aos="fade-up"
-      data-aos-delay={section.delay}
     >
-      {index % 2 === 0 ? (
-        // Caso para index par (imagen primero, luego texto)
-        <>
-          <aside className="md:col-start-1 md:col-end-3 md:row-start-2 md:row-end-3 sm:row-start-1 sm:row-end-2 order-1 sm:order-2">
+      {/* BLOQUE DE IMÁGENES / SLIDER / TECH GRID */}
+      <div className="w-full md:w-2/5 flex justify-center">
+        {section.isTech ? (
+          /* Renderizado especial para los 14 logos */
+          <div className="grid grid-cols-4 gap-4 p-6 bg-green-500/5 rounded-3xl border border-green-500/20 backdrop-blur-md">
+            {section.img.map((logo, i) => (
+              <img
+                key={i}
+                src={logo}
+                className="w-10 h-10 object-contain hover:scale-110 transition-transform"
+                alt="tech"
+              />
+            ))}
+          </div>
+        ) : (
+          /* Renderizado para fotos normales con Slider si hay más de una */
+          <div className="w-full max-w-sm">
             {section.img.length > 1 ? (
               <Slider {...settings}>
-                {section.img.map((src, indx) => (
-                  <div key={indx}>
+                {section.img.map((src, i) => (
+                  <div key={i} className="outline-none">
                     <img
                       src={src}
-                      style={section.styles[indx]}
-                      className="h-auto img"
+                      className="rounded-3xl border-2 border-green-500/30 shadow-lg mx-auto h-64 w-64 object-cover"
                     />
                   </div>
                 ))}
@@ -73,46 +49,22 @@ export const IntroSection = ({ section, index }) => {
             ) : (
               <img
                 src={section.img[0]}
-                style={section.styles[0]}
-                alt="profile"
-                className=" h-auto img"
+                className="rounded-3xl border-2 border-green-500/30 shadow-lg w-64 h-64 object-cover"
               />
             )}
-          </aside>
-          <div className="text md:col-span-3 md:row-span-3 order-2 md:order-1 sm:row-start-2 sm:row-end-2">
-            {section.text}
           </div>
-        </>
-      ) : (
-        // Caso para index impar (texto primero, luego imagen)
-        <>
-          <div className="text md:col-span-3 md:row-span-3 order-2 md:order-1 sm:row-start-2 sm:row-end-2">
-            {section.text}
-          </div>
-          <aside className="md:col-start-1 md:col-end-3 md:row-start-2 md:row-end-3 sm:row-start-1 sm:row-end-2 sm:row-span-1 sm:col-span-1 order-1 sm:order-2">
-            {section.img.length > 1 ? (
-              <Slider {...settings}>
-                {section.img.map((src, indx) => (
-                  <div key={indx}>
-                    <img
-                      src={src}
-                      style={section.styles[indx]}
-                      className="h-auto img"
-                    />
-                  </div>
-                ))}
-              </Slider>
-            ) : (
-              <img
-                src={section.img[0]}
-                style={section.styles[0]}
-                alt="profile"
-                className=" h-auto img"
-              />
-            )}
-          </aside>
-        </>
-      )}
-    </div>
+        )}
+      </div>
+
+      {/* BLOQUE DE TEXTO */}
+      <div className="w-full md:w-3/5">
+        <h2 className="font-special text-3xl font-bold text-green-400 mb-6 drop-shadow-[0_0_8px_rgba(74,222,128,0.3)]">
+          {section.title}
+        </h2>
+        <div className="border border-green-500/40 prose-text text-gray-200 text-lg md:text-xl text-justify backdrop-blur-md bg-black/40 p-8 rounded-3xl shadow-2xl">
+          {section.text}
+        </div>
+      </div>
+    </section>
   );
 };

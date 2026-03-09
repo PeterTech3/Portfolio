@@ -1,218 +1,192 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { LanguageContext } from "../context/languageContext";
-import { useNavigate } from "react-router-dom";
-import "../assets/styles/console.scss";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ScrollToTop } from "./ScrollTop";
 
 export const Console = () => {
-  const [lines, setLines] = useState(() => {
-    const savedLines = localStorage.getItem('consoleLines');
-    return savedLines ? JSON.parse(savedLines) : [];
-  });
-  const [history, setHistory] = useState(() => {
-    const savedHistory = localStorage.getItem('commandHistory');
-    return savedHistory ? JSON.parse(savedHistory) : [];
-  });
-  const [historyIndex, setHistoryIndex] = useState(history.length);
-  const inputRef = useRef(null);
-  const [pendingCommand, setPendingCommand] = useState(null);
   const { language, toggleLanguage, isOpen, setIsOpen } =
     useContext(LanguageContext);
   const navigate = useNavigate();
   const location = useLocation();
-  const isTransparent =
-    location.pathname === "/" ||
-    location.pathname === "/home" ||
-    location.pathname === "/education" ||
-    location.pathname === "/contact";
+  const inputRef = useRef(null);
 
-  //guarda en el local las lineas escritas
-  useEffect(() => {
-    localStorage.setItem('consoleLines', JSON.stringify(lines));
-  }, [lines]);
+  // Inicialización de estado limpia
+  const [lines, setLines] = useState(
+    () => JSON.parse(localStorage.getItem("consoleLines")) || [],
+  );
+  const [history, setHistory] = useState(
+    () => JSON.parse(localStorage.getItem("commandHistory")) || [],
+  );
+  const [historyIndex, setHistoryIndex] = useState(-1);
 
-  //guarda en el local el nuevo history
-  useEffect(() => {
-    localStorage.setItem('commandHistory', JSON.stringify(history));
-  }, [history]);
+  const isTransparent = ["/", "/home", "/education", "/contact"].includes(
+    location.pathname,
+  );
 
-  //focus en el input al abrir la consola y escribir linea
+  // Sincronización con LocalStorage
   useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
+    localStorage.setItem("consoleLines", JSON.stringify(lines));
+    localStorage.setItem("commandHistory", JSON.stringify(history));
+  }, [lines, history]);
+
+  // Auto-focus y Auto-scroll
+  useEffect(() => {
+    if (isOpen && inputRef.current) inputRef.current.focus();
+    const container = document.getElementById("console-scroll-area");
+    if (container) container.scrollTop = container.scrollHeight;
   }, [isOpen, lines]);
 
-  //retardo para guardar en el local un comando valido
-  useEffect(() => {
-    if (pendingCommand) {
-      handleCommand(pendingCommand);
-      setPendingCommand(null);
-    }
-  }, [pendingCommand]);
-
-  //navegador entre los comandos insertados con las flechas
-  useEffect(() => {
-    if (historyIndex >= 0 && historyIndex < history.length) {
-      inputRef.current.value = history[historyIndex];
-    } else if (historyIndex === -1) {
-      inputRef.current.value = "";
-    } else if (historyIndex > history.length - 1) {
-      inputRef.current.value = "";
-    }
-  }, [history, historyIndex]);
-
-  //scrollea hacia abajo segun me salgo de la consola
-  useEffect(() => {
-    const consoleContainer = document.getElementById("console-container");
-    consoleContainer.scrollTop = consoleContainer.scrollHeight;
-  }, [lines]);
-
   const handleCommand = (inputValue) => {
-    const parts = inputValue.split(" ");
-    const command = parts[0];
-    const args = parts.slice(1);
+    const command = inputValue.trim().toLowerCase();
 
-    const commands = {
-      "/help":
-        language === "es"
-          ? "Comandos disponibles: \n\t/help\n\t/clear\n\t/inicio\n\t/sobremi\n\t/formacion\n\t/experiencia\n\t/proyectos\n\t/idioma\n\t/contacto"
-          : "Available commands:\n\t/help\n\t/clear\n\t/home\n\t/about\n\t/education\n\t/experience\n\t/projects\n\t/language\n\t/contact",
-      //ES
-      "/clear": () => {
-        setLines([]);
-      },
-      "/sobremi": () => {
-        navigate("/about");
-      },
-      "/formacion": () => {
-        navigate("/education");
-      },
-      "/experiencia": () => {
-        navigate("/experience");
-      },
-      "/idioma": () => toggleLanguage(),
-      "/inicio": () => {
-        navigate("/home");
-      },
-      "/proyectos": () => {
-        navigate("/proyects");
-      },
-      "/contacto": () => {
-        navigate("/contact");
-      },
-      //EN
-      "/about": () => {
-        navigate("/about");
-      },
-      "/education": () => {
-        navigate("/education");
-      },
-      "/experience": () => {
-        navigate("/experience");
-      },
-      "/language": () => toggleLanguage(),
-      "/home": () => {
-        navigate("/home");
-      },
-      "/projects": () => {
-        navigate("/proyects");
-      },
-      "/contact": () => {
-        navigate("/contact");
-      },
+    // Mapeo de comandos a rutas reales
+    const routesMap = {
+      // ES
+      "/inicio": "/home",
+      "/sobremi": "/about",
+      "/formacion": "/education",
+      "/experiencia": "/experience",
+      "/proyectos": "/proyects",
+      "/contacto": "/contact",
+      // EN
+      "/home": "/home",
+      "/about": "/about",
+      "/education": "/education",
+      "/experience": "/experience",
+      "/projects": "/proyects",
+      "/contact": "/contact",
     };
 
-    if (commands[command]) {
-      if (typeof commands[command] === "function") {
-        commands[command](args);
-        setLines((prevLines) => [
-          ...prevLines,
-          `recruiter@recruiter:$ ${inputValue}`,
-          commands[command],
-        ]);
-      } else {
-        setLines((prevLines) => [
-          ...prevLines,
-          `recruiter@recruiter:$ ${inputValue}`,
-          commands[command],
-        ]);
-      }
-    } else {
-      setLines((prevLines) => [
-        ...prevLines,
-        `recruiter@recruiter:$ ${inputValue}`,
+    let response = "";
+
+    // 1. Comando Ayuda
+    if (command === "/help") {
+      response =
         language === "es"
-        ?`Comando no encontrado: ${inputValue}`
-        :`Command not found: ${inputValue}`,
-        
-      ]);
+          ? "Comandos: /help, /clear, /inicio, /sobremi, /formacion, /experiencia, /proyectos, /idioma, /contacto"
+          : "Commands: /help, /clear, /home, /about, /education, /experience, /projects, /language, /contact";
     }
+    // 2. Comando Limpiar
+    else if (command === "/clear") {
+      setLines([]);
+      return; // Salimos para no agregar la línea de "clear" al historial visible
+    }
+    // 3. Comando Idioma (Toggle)
+    else if (command === "/idioma" || command === "/language") {
+      toggleLanguage();
+      response =
+        language === "es" ? "Cambiando a Inglés..." : "Changing to Spanish...";
+    }
+    // 4. Comandos de Navegación
+    else if (routesMap[command]) {
+      const targetPath = routesMap[command];
+      navigate(targetPath);
+      response =
+        language === "es"
+          ? `Navegando a ${command}...`
+          : `Navigating to ${command}...`;
+    }
+    // 5. Comando no encontrado
+    else {
+      response =
+        language === "es"
+          ? `Comando no encontrado: ${command}`
+          : `Command not found: ${command}`;
+    }
+
+    // Añadimos el comando y la respuesta a la consola
+    setLines((prev) => [
+      ...prev,
+      `recruiter@recruiter:$ ${inputValue}`,
+      response,
+    ]);
   };
 
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      const inputValue = event.target.value;
-      setHistory((prevHistory) => [...prevHistory, inputValue]);
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && e.target.value.trim()) {
+      const val = e.target.value;
+      setHistory((prev) => [...prev, val]);
+      handleCommand(val);
+      e.target.value = "";
       setHistoryIndex(-1);
-      setPendingCommand(inputValue);
-      event.target.value = "";
-    } else if (event.key === "ArrowUp") {
-      if (historyIndex === -1){
-        console.log('keyup - 1');
-        let maxLenght = history.length
-        setHistoryIndex(() => maxLenght - 1, 0);
-
-      } else {
-        console.log('keyup != -1');
-
-        setHistoryIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+    } else if (e.key === "ArrowUp") {
+      const nextIndex =
+        historyIndex === -1
+          ? history.length - 1
+          : Math.max(historyIndex - 1, 0);
+      if (history[nextIndex]) {
+        setHistoryIndex(nextIndex);
+        e.target.value = history[nextIndex];
       }
-    } else if (event.key === "ArrowDown") {
-      console.log('keydown');
-
-      setHistoryIndex((prevIndex) =>
-        Math.min(prevIndex + 1, history.length)
-      );
-    }
-  };
-
-  const getButtonText = () => {
-    if (language === "es") {
-      return isOpen ? "Cerrar Consola" : "Abrir Consola";
-    } else if (language === "en") {
-      return isOpen ? "Close Console" : "Open Console";
+    } else if (e.key === "ArrowDown") {
+      const nextIndex = historyIndex + 1;
+      if (nextIndex < history.length) {
+        setHistoryIndex(nextIndex);
+        e.target.value = history[nextIndex];
+      } else {
+        setHistoryIndex(-1);
+        e.target.value = "";
+      }
     }
   };
 
   return (
     <>
-        <ScrollToTop />
-        <div className="top-container">
-          <div className="toggle-button" onClick={() => setIsOpen(!isOpen)}>
-            {getButtonText()}
-          </div>
-          <div className={`console-container ${isOpen ? "open" : "closed"} `}>
-            <div id="console-container" className={`console ${isTransparent ? "transparent" : ""}`}>
-              {lines.map((line, index) => (
-                <div className="input-line" key={index}>
-                  <span className="prompt"> </span>
-                  <span className="console-text">{line}</span>
-                </div>
-              ))}
-              <div className="input-line">
-                <span className="prompt">recruiter@recruiter:$ </span>
-                <input
-                  type="text"
-                  ref={inputRef}
-                  onKeyDown={handleKeyDown}
-                  autoFocus
-                />
-              </div>
+      <ScrollToTop />
+      {/* Botón de Toggle */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="fixed top-5 right-5 z-50 px-4 py-2 bg-green-500/20 border border-green-500 text-green-500 font-special hover:bg-green-500 hover:text-black transition-all cursor-pointer rounded"
+      >
+        {language === "es"
+          ? isOpen
+            ? "Cerrar Consola"
+            : "Abrir Consola"
+          : isOpen
+            ? "Close Console"
+            : "Open Console"}
+      </button>
+
+      {/* Contenedor de la Consola */}
+      <div
+        className={`
+        fixed bottom-0 left-0 w-full transition-all duration-500 z-40
+        ${isOpen ? "h-1/2 opacity-100" : "h-0 opacity-0 pointer-events-none"}
+      `}
+      >
+        <div
+          id="console-scroll-area"
+          className={`
+    w-full h-full p-4 font-special text-sm md:text-base
+    /* Usamos overflow-y-auto para que solo aparezca si el texto desborda */
+    overflow-y-auto overflow-x-hidden
+    ${isTransparent ? "bg-zinc-950/80 backdrop-blur-xl" : "bg-black"}
+    border-t border-green-500/50 text-green-400
+    /* Esto evita que el padding y el border sumen al alto total */
+    box-border
+  `}
+          style={{ scrollbarWidth: "none" }}
+        >
+          {lines.map((line, i) => (
+            <div key={i} className="mb-1">
+              <span className="opacity-80">{line}</span>
             </div>
+          ))}
+          <div className="flex items-center gap-2">
+            <span className="text-green-500 shrink-0">
+              recruiter@recruiter:$
+            </span>
+            <input
+              ref={inputRef}
+              onKeyDown={handleKeyDown}
+              className="bg-transparent border-none outline-none text-green-400 w-full"
+              type="text"
+              spellCheck="false"
+              autoComplete="off"
+            />
           </div>
         </div>
+      </div>
     </>
   );
 };

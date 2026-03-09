@@ -1,56 +1,63 @@
-import { useContext, useEffect, useState } from "react";
-import "../assets/styles/home.scss";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { LanguageContext } from "../context/languageContext";
 
 export const AnimatedMessages = () => {
-    const { language } = useContext(LanguageContext);    
+  const { language } = useContext(LanguageContext);
 
-    const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
-    const [displayedText, setDisplayedText] = useState('');
-    const [isTyping, setIsTyping] = useState(true);
+  const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
+  const [displayedText, setDisplayedText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
 
-    useEffect(() => {
-        let messages;
-        if (language === "es") {
-            messages = [
-                " _Bienvenido a mi Portfolio",
-                " _Abre la consola",
-                " _Y escribe /help para empezar"
-            ];
-        } else {
-            messages = [
-                " _Welcome to my Portfolio",
-                " _Open the console",
-                " _And type /help to start"
-            ];
+  // 1. Memorizamos los mensajes para evitar cálculos innecesarios
+  const messages = useMemo(() => {
+    return language === "es"
+      ? [
+          "Bienvenido a mi Portfolio",
+          "Abre la consola",
+          "Escribe /help para empezar",
+        ]
+      : ["Welcome to my Portfolio", "Open the console", "Type /help to start"];
+  }, [language]);
+
+  useEffect(() => {
+    const currentFullText = messages[currentMessageIndex];
+
+    // 2. Definimos la velocidad según si está escribiendo o esperando
+    const typingSpeed = isDeleting ? 50 : 100;
+
+    const timeout = setTimeout(() => {
+      if (!isDeleting) {
+        // Escribiendo
+        setDisplayedText(currentFullText.slice(0, displayedText.length + 1));
+
+        if (displayedText === currentFullText) {
+          // Pausa cuando termina de escribir
+          setTimeout(() => setIsDeleting(true), 2000);
         }
-        const currentMessage = messages[currentMessageIndex];
-        let charIndex = 0;
-        const typeWriter = () => {
-            if (charIndex < currentMessage.length) {
-                setDisplayedText((prev) => prev + currentMessage.charAt(charIndex));
-                charIndex++;
-                setTimeout(typeWriter, 100);
-            } else {
-                setTimeout(() => {
-                    setIsTyping(false);
-                    setDisplayedText('');
-                    setTimeout(() => {
-                        setCurrentMessageIndex((prev) => (prev + 1) % messages.length);
-                        setIsTyping(true);
-                    }, 1000);
-                }, 2000);
-            }
-        };
+      } else {
+        // Borrando
+        const nextText = currentFullText.slice(0, displayedText.length - 1);
+        setDisplayedText(nextText);
 
-        if (isTyping) {
-            setDisplayedText(''); 
-            setTimeout(typeWriter, 300);
+        // Si ya se borró todo el texto
+        if (displayedText === "") {
+          setIsDeleting(false);
+          // Cambiamos al siguiente mensaje
+          setCurrentMessageIndex((prev) => (prev + 1) % messages.length);
+          // IMPORTANTE: Limpiamos el texto explícitamente para el siguiente ciclo
+          setDisplayedText("");
         }
+      }
+    }, typingSpeed);
 
-    }, [currentMessageIndex]);
+    // 3. LIMPIEZA: Fundamental para evitar bugs al actualizar versiones
+    return () => clearTimeout(timeout);
+  }, [displayedText, isDeleting, currentMessageIndex, messages]);
 
-    return (
-        <h1 className="animated-message">{displayedText}</h1>
-    )
+  return (
+    <h1 className="text-white text-center drop-shadow-lg">
+      {displayedText}
+      <span className="animate-blink ml-1">|</span>
+    </h1>
+  );
 };

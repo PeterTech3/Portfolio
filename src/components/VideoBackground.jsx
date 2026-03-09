@@ -1,14 +1,14 @@
-import '../assets/styles/home.scss';
-
 export const VideoBackground = ({ src }) => {
-
-    return (
-        <div className="video-container">
-            <video autoPlay loop muted className="video-background" id="backgroundVideo">
-                <source src={src} type="video/mp4" />
-                Tu navegador no soporta videos HTML5.
-            </video>
-           
-        </div>
-    );
+  return (
+    <video
+      autoPlay
+      loop
+      muted
+      playsInline
+      className="fixed top-0 left-0 w-full h-full object-cover opacity-50 -z-1"
+      style={{ zIndex: 0 }} // Lo ponemos en 0 o -1
+    >
+      <source src={src} type="video/mp4" />
+    </video>
+  );
 };

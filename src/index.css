@@ -1,3 +1,81 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
+
+html, body {
+  background-color: #0a0f18; 
+  margin: 0;
+  padding: 0;
+  /* CAMBIO: Permitimos scroll vertical, ocultamos el horizontal */
+  overflow-y: auto; 
+  overflow-x: hidden;
+  /* CAMBIO: Quitamos el alto fijo de 100vh para que crezca con el contenido */
+  height: auto;
+  min-height: 100%;
+}
+
+#root {
+  /* CAMBIO: min-height en lugar de height fijo */
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+}
+
+@theme {
+  /* Aquí SOLO variables y keyframes */
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+  
+  /* Definimos la animación como una variable de tema */
+  --animate-blink: blink 1s step-start infinite;
+  --font-special: "JetBrains Mono", monospace;
+}
+
+@layer components {
+  /* Efecto de texto con resplandor verde que tenías */
+  .text-glow-green {
+    text-shadow: 0 0 10px rgba(34, 197, 94, 0.4);
+  }
+
+  /* Animación suave para cuando se abre la consola */
+  .intro-container {
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s linear;
+  }
+
+  .prose-text {
+    font-family: var(--font-special) !important;
+    line-height: 1.8; /* Más espacio entre líneas ayuda a la vista */
+    letter-spacing: -0.01em;
+    font-weight: 300; /* Un poco más fina queda muy elegante sobre fondo oscuro */
+  }
+}
+
+/* Ocultar barra de scroll por defecto en la consola */
+#console-scroll-area {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+#console-scroll-area::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Solo si el contenido es tan largo que realmente desborda, la mostramos (opcional) */
+/* Si prefieres que NUNCA se vea, borra lo de abajo */
+#console-scroll-area.has-overflow {
+  scrollbar-width: thin;
+}
+
+/* Limpieza de scrollbars globales para que la experiencia sea inmersiva */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #000;
+}
+::-webkit-scrollbar-thumb {
+  background: #22c55e;
+  border-radius: 10px;
+}
